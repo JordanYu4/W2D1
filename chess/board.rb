@@ -25,7 +25,7 @@ class Board
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
   end
-
+gi
 end
 
 class Piece

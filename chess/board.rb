@@ -1,15 +1,16 @@
+require_relative 'piece'
 
 class Board
   attr_accessor :grid
 
   def initialize(grid = nil)
     @grid = grid
-    @grid ||= Array.new(8) { Array.new(8) }
+    @grid ||= Array.new(8) { Array.new(8, NullPiece.instance) }
   end
 
   def [](pos)
     row, col = pos
-    self.grid[row][col]
+    grid[row][col]
   end
 
   def []=(pos, piece)
@@ -19,23 +20,15 @@ class Board
 
   def move_piece(start_pos, end_pos)
     raise "No Piece in Start Position" if self[start_pos].nil?
-    if end_pos.first > grid.length || end_pos.last > grid.transpose.length
-      raise "Position Not on Board"
-    end
+    raise "Position Not on Board" unless valid_pos?(end_pos)
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
   end
-gi
-end
 
-class Piece
-  def initialize
+  def valid_pos?(pos)
+    pos.first.between?(0, 7) && pos.last.between?(0, 7)
   end
-end
 
-class NullPiece < Piece
-  def initialize
-  end
 end
 
 if __FILE__ == $PROGRAM_NAME

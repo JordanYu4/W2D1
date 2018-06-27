@@ -6,6 +6,21 @@ class Board
   def initialize(grid = nil)
     @grid = grid
     @grid ||= Array.new(8) { Array.new(8, NullPiece.instance) }
+    populate
+  end
+
+  def populate
+    back_rank = [Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook]
+    (0..7).each do |col|
+      self[[0, col]] = back_rank[col].new(:black, self, [0, col])
+      self[[7, col]] = back_rank[col].new(:white, self, [7, col])
+    end
+    grid[1].each_index do |col|
+      self[[1, col]] = Pawn.new(:black, self, [1, col])
+    end
+    grid[6].each_index do |col|
+      self[[6, col]] = Pawn.new(:white, self, [6, col])
+    end
   end
 
   def [](pos)

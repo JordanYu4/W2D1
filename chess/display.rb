@@ -4,7 +4,6 @@ require_relative "board"
 String.disable_colorization = false
 
 class Display
-
   attr_reader :board, :cursor
 
   def initialize(board)
@@ -15,12 +14,14 @@ class Display
   def render
     board.grid.each_with_index do |arr, idx1|
       arr.each_with_index do |arr2, idx2|
+        piece = board[[idx1, idx2]]
+
         if [idx1, idx2] == cursor.cursor_pos
-          print "  ".colorize(:background => :light_blue)
+          print piece.token.colorize(:color => piece.color, :background => :light_blue)
         elsif (idx1 + idx2).odd?
-          print "  ".colorize(:background => :white)
+          print piece.token.colorize(:color => piece.color, :background => :light_red)
         else
-          print "  ".colorize(:background => :black)
+          print piece.token.colorize(:color => piece.color, :background => :yellow)
         end
       end
       print "\n"
@@ -34,8 +35,6 @@ class Display
       system("clear")
     end
   end
-
-
 end
 
 if __FILE__ == $PROGRAM_NAME
